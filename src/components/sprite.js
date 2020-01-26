@@ -153,12 +153,12 @@ export default function Sprite(props) {
 
   const initializeControls = () => {
     window.addEventListener('keydown', handleInteractions);
-    // window.addEventListener('keyup', rest);
+    window.addEventListener('keyup', rest);
   }
 
   const removeControls = () => {
     window.removeEventListener('keydown', handleInteractions);
-    // window.addEventListener('keyup', rest);
+    window.addEventListener('keyup', rest);
   }
 
   useEffect(() => {
