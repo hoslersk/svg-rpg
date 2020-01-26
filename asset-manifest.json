@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.11babba7.chunk.css",
-    "main.js": "/static/js/main.edc58553.chunk.js",
-    "main.js.map": "/static/js/main.edc58553.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.caa3bca4.js",
-    "runtime-main.js.map": "/static/js/runtime-main.caa3bca4.js.map",
-    "static/js/2.90714175.chunk.js": "/static/js/2.90714175.chunk.js",
-    "static/js/2.90714175.chunk.js.map": "/static/js/2.90714175.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.e91a511e23197547bc653292315d6b72.js": "/precache-manifest.e91a511e23197547bc653292315d6b72.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.11babba7.chunk.css.map": "/static/css/main.11babba7.chunk.css.map",
-    "static/js/2.90714175.chunk.js.LICENSE": "/static/js/2.90714175.chunk.js.LICENSE"
+    "main.css": "/svg-rpg/static/css/main.11babba7.chunk.css",
+    "main.js": "/svg-rpg/static/js/main.80dfa450.chunk.js",
+    "main.js.map": "/svg-rpg/static/js/main.80dfa450.chunk.js.map",
+    "runtime-main.js": "/svg-rpg/static/js/runtime-main.7b230714.js",
+    "runtime-main.js.map": "/svg-rpg/static/js/runtime-main.7b230714.js.map",
+    "static/js/2.90714175.chunk.js": "/svg-rpg/static/js/2.90714175.chunk.js",
+    "static/js/2.90714175.chunk.js.map": "/svg-rpg/static/js/2.90714175.chunk.js.map",
+    "index.html": "/svg-rpg/index.html",
+    "precache-manifest.ffaec5bac1dca4f4aa0240419793e66d.js": "/svg-rpg/precache-manifest.ffaec5bac1dca4f4aa0240419793e66d.js",
+    "service-worker.js": "/svg-rpg/service-worker.js",
+    "static/css/main.11babba7.chunk.css.map": "/svg-rpg/static/css/main.11babba7.chunk.css.map",
+    "static/js/2.90714175.chunk.js.LICENSE": "/svg-rpg/static/js/2.90714175.chunk.js.LICENSE"
   },
   "entrypoints": [
-    "static/js/runtime-main.caa3bca4.js",
+    "static/js/runtime-main.7b230714.js",
     "static/js/2.90714175.chunk.js",
     "static/css/main.11babba7.chunk.css",
-    "static/js/main.edc58553.chunk.js"
+    "static/js/main.80dfa450.chunk.js"
   ]
 }
