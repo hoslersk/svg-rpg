@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/svg-rpg/static/css/main.11babba7.chunk.css",
-    "main.js": "/svg-rpg/static/js/main.799aa951.chunk.js",
-    "main.js.map": "/svg-rpg/static/js/main.799aa951.chunk.js.map",
+    "main.js": "/svg-rpg/static/js/main.05585b28.chunk.js",
+    "main.js.map": "/svg-rpg/static/js/main.05585b28.chunk.js.map",
     "runtime-main.js": "/svg-rpg/static/js/runtime-main.7b230714.js",
     "runtime-main.js.map": "/svg-rpg/static/js/runtime-main.7b230714.js.map",
     "static/js/2.4cde7d96.chunk.js": "/svg-rpg/static/js/2.4cde7d96.chunk.js",
     "static/js/2.4cde7d96.chunk.js.map": "/svg-rpg/static/js/2.4cde7d96.chunk.js.map",
     "index.html": "/svg-rpg/index.html",
-    "precache-manifest.f966ff2b8e1caead0cf4554f2aa2c8cd.js": "/svg-rpg/precache-manifest.f966ff2b8e1caead0cf4554f2aa2c8cd.js",
+    "precache-manifest.9f17ba7af3f33531d565020c4d2125f2.js": "/svg-rpg/precache-manifest.9f17ba7af3f33531d565020c4d2125f2.js",
     "service-worker.js": "/svg-rpg/service-worker.js",
     "static/css/main.11babba7.chunk.css.map": "/svg-rpg/static/css/main.11babba7.chunk.css.map",
     "static/js/2.4cde7d96.chunk.js.LICENSE": "/svg-rpg/static/js/2.4cde7d96.chunk.js.LICENSE"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.7b230714.js",
     "static/js/2.4cde7d96.chunk.js",
     "static/css/main.11babba7.chunk.css",
-    "static/js/main.799aa951.chunk.js"
+    "static/js/main.05585b28.chunk.js"
   ]
 }
