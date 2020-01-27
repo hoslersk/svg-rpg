@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8ad457892d2284294dd4c6cdb8b0fc61",
+    "revision": "2d830ab6d2970dd645e88e58336fd93b",
     "url": "/svg-rpg/index.html"
   },
   {
-    "revision": "058bc2d031a2efbf0dc4",
+    "revision": "4996147a4c76699fae44",
     "url": "/svg-rpg/static/css/main.11babba7.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/svg-rpg/static/js/2.4cde7d96.chunk.js.LICENSE"
   },
   {
-    "revision": "058bc2d031a2efbf0dc4",
-    "url": "/svg-rpg/static/js/main.15af6f3e.chunk.js"
+    "revision": "4996147a4c76699fae44",
+    "url": "/svg-rpg/static/js/main.799aa951.chunk.js"
   },
   {
     "revision": "ce5ab42d60bbf3ce5ae8",
