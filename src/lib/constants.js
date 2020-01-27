@@ -36,6 +36,6 @@ export const RS_SPRITE_HEX_COLORS = {
   yellow: '#ffb855',
 };
 
-export const THROTTLE_WAIT_DURATION = 200;//80;
+export const THROTTLE_WAIT_DURATION = 150;
 
-export const MOVEMENT_INCREMENT = 3; // 4;
+export const MOVEMENT_INCREMENT = 3;
