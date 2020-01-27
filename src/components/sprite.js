@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
-import { filter, get, some, split, throttle } from 'lodash';
+import React, { useMemo } from 'react';
+import { debounce, filter, get, some, split, throttle } from 'lodash';
 
 import EnvironmentContext from '../contexts/environment-context';
 import SpriteContext from '../contexts/sprite-context';
+import { useOnKeyPress } from '../lib/hooks';
 import Rect from './rect';
 import {
   MOVEMENT_INCREMENT,
@@ -106,66 +107,46 @@ export default function Sprite(props) {
           return shouldUpdatePosition(boundsY, nextCoordinate);
         };
 
-  const moveUp = () => {
+  const moveUp = throttle(() => {
         setDirection(direction => determineDirection(direction, 'up'));
         setPositionY(y => {
           const newPosition = y - MOVEMENT_INCREMENT;
           if (shouldUpdatePositionY(newPosition)) return newPosition;
           return y;
         });
-      },
-      moveDown = () => {
+      }, THROTTLE_WAIT_DURATION),
+      moveDown = throttle(() => {
         setDirection(direction => determineDirection(direction, 'down'));
         setPositionY(y => {
           const newPosition = y + MOVEMENT_INCREMENT;
           if (shouldUpdatePositionY(newPosition)) return newPosition;
           return y;
         });
-      },
-      moveRight = () => {
+      }, THROTTLE_WAIT_DURATION),
+      moveRight = throttle(() => {
         setDirection(direction => determineDirection(direction, 'right'));
         setPositionX(x => {
           const newPosition = x + MOVEMENT_INCREMENT;
           if (shouldUpdatePositionX(newPosition)) return newPosition;
           return x;
         });
-      },
-      moveLeft = () => {
+      }, THROTTLE_WAIT_DURATION),
+      moveLeft = throttle(() => {
         setDirection(direction => determineDirection(direction, 'left'));
         setPositionX(x => {
           const newPosition = x - MOVEMENT_INCREMENT;
           if (shouldUpdatePositionX(newPosition)) return newPosition;
           return x;
         });
-      },
-      rest = throttle(() => {
+      }, THROTTLE_WAIT_DURATION),
+      rest = debounce(() => {
         setDirection(direction => split(direction, '-')[0]);
       }, THROTTLE_WAIT_DURATION);
 
-  const handleInteractions = throttle((event) => {
-    const { code, keyCode } = event;
-
-    if (code === 'ArrowLeft' || keyCode === 37) moveLeft();
-    if (code === 'ArrowUp' || keyCode === 38) moveUp();
-    if (code === 'ArrowRight' || keyCode === 39) moveRight();
-    if (code === 'ArrowDown' || keyCode === 40) moveDown();
-  }, THROTTLE_WAIT_DURATION);
-
-  const initializeControls = () => {
-    window.addEventListener('keydown', handleInteractions);
-    window.addEventListener('keyup', rest);
-  }
-
-  const removeControls = () => {
-    window.removeEventListener('keydown', handleInteractions);
-    window.addEventListener('keyup', rest);
-  }
-
-  useEffect(() => {
-    removeControls();
-    initializeControls();
-    return removeControls;
-  });
+  useOnKeyPress('ArrowUp', moveUp, rest);
+  useOnKeyPress('ArrowDown', moveDown, rest);
+  useOnKeyPress('ArrowLeft', moveLeft, rest);
+  useOnKeyPress('ArrowRight', moveRight, rest);
 
   return (
     <g className="sprite">
