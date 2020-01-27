@@ -5,22 +5,19 @@ const SpriteContext = createContext(null);
 
 export function SpriteContextProvider({ children, environment, sprite }) {
 
-  const [positionX, setPositionX] = useState(40),
-        [positionY, setPositionY] = useState(40),
+  const [position, setPosition] = useState({ x: 40, y: 40 }),
         [direction, setDirection] = useState('down');
 
   const fill = useMemo(() => {
     const matchingState = find(sprite.states, ['direction', direction]),
           matchingId = matchingState ? matchingState.id : sprite.states[0].id;
-          
+
     return `url(#${matchingId})`;
   }, [direction, sprite.states]);
 
   const spriteProps = {
-    positionX,
-    setPositionX,
-    positionY,
-    setPositionY,
+    position,
+    setPosition,
     direction,
     setDirection,
     fill,

@@ -58,23 +58,14 @@ export default function Sprite(props) {
         obstacles = filter(get(environmentProps, 'layers', []), 'collision'),
         spriteProps = SpriteContext.useContext(),
         {
-          positionX,
-          setPositionX,
-          positionY,
-          setPositionY,
-          // direction,
+          position,
+          setPosition,
           setDirection,
           fill,
           width,
           height,
           collisionOffsetX,
           collisionOffsetY,
-          // spriteState,
-          // setSpriteState,
-          // moveUp,
-          // moveDown,
-          // moveLeft,
-          // moveRight,
         } = spriteProps;
 
 
@@ -82,10 +73,12 @@ export default function Sprite(props) {
           min: 0,
           max: environmentWidth - width,
         }), [environmentWidth, width]),
+
         boundsY = useMemo(() => ({
             min: 0,
             max: environmentHeight - height,
         }), [environmentHeight, height]);
+
 
   const willCollide = (newCoordinates) => {
           return some(obstacles, obstacle => {
@@ -95,53 +88,70 @@ export default function Sprite(props) {
                     newCoordinates.y - collisionOffsetY < obstacle.y + obstacle.height;
           });
         },
+
         shouldUpdatePosition = (bounds, nextCoordinate) => {
           return nextCoordinate >= bounds.min && nextCoordinate <= bounds.max;
         },
-        shouldUpdatePositionX = nextCoordinate => {
-          if (willCollide({ x: nextCoordinate, y: positionY })) return false;
-          return shouldUpdatePosition(boundsX, nextCoordinate);
+
+        shouldUpdatePositionX = nextCoordinates => {
+          if (willCollide(nextCoordinates)) return false;
+          return shouldUpdatePosition(boundsX, nextCoordinates.x);
         },
-        shouldUpdatePositionY = nextCoordinate => {
-          if (willCollide({ x: positionX, y: nextCoordinate })) return false;
-          return shouldUpdatePosition(boundsY, nextCoordinate);
+
+        shouldUpdatePositionY = nextCoordinates => {
+          if (willCollide(nextCoordinates)) return false;
+          return shouldUpdatePosition(boundsY, nextCoordinates.y);
         };
+
 
   const moveUp = throttle(() => {
         setDirection(direction => determineDirection(direction, 'up'));
-        setPositionY(y => {
-          const newPosition = y - MOVEMENT_INCREMENT;
-          if (shouldUpdatePositionY(newPosition)) return newPosition;
-          return y;
+        setPosition(({ x, y }) => {
+          const newY = y - MOVEMENT_INCREMENT,
+          newCoordinates = { x, y: newY };
+
+          if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
+          return ({ x, y });
         });
       }, THROTTLE_WAIT_DURATION),
+
       moveDown = throttle(() => {
         setDirection(direction => determineDirection(direction, 'down'));
-        setPositionY(y => {
-          const newPosition = y + MOVEMENT_INCREMENT;
-          if (shouldUpdatePositionY(newPosition)) return newPosition;
-          return y;
+        setPosition(({ x, y }) => {
+          const newY = y + MOVEMENT_INCREMENT,
+                newCoordinates = { x, y: newY };
+
+          if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
+          return ({ x, y });
         });
       }, THROTTLE_WAIT_DURATION),
+
       moveRight = throttle(() => {
         setDirection(direction => determineDirection(direction, 'right'));
-        setPositionX(x => {
-          const newPosition = x + MOVEMENT_INCREMENT;
-          if (shouldUpdatePositionX(newPosition)) return newPosition;
-          return x;
+        setPosition(({ x, y }) => {
+          const newX = x + MOVEMENT_INCREMENT,
+                newCoordinates = { x: newX, y };
+
+          if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
+          return ({ x, y });
         });
       }, THROTTLE_WAIT_DURATION),
+
       moveLeft = throttle(() => {
         setDirection(direction => determineDirection(direction, 'left'));
-        setPositionX(x => {
-          const newPosition = x - MOVEMENT_INCREMENT;
-          if (shouldUpdatePositionX(newPosition)) return newPosition;
-          return x;
+        setPosition(({ x, y }) => {
+          const newX = x - MOVEMENT_INCREMENT,
+                newCoordinates = { x: newX, y };
+
+          if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
+          return ({ x, y });
         });
       }, THROTTLE_WAIT_DURATION),
+
       rest = debounce(() => {
         setDirection(direction => split(direction, '-')[0]);
       }, THROTTLE_WAIT_DURATION);
+
 
   useOnKeyPress('ArrowUp', moveUp, rest);
   useOnKeyPress('ArrowDown', moveDown, rest);
@@ -151,8 +161,8 @@ export default function Sprite(props) {
   return (
     <g className="sprite">
       <Rect
-        x={positionX}
-        y={positionY}
+        x={position.x}
+        y={position.y}
         height={height}
         width={width}
         fill={fill}
