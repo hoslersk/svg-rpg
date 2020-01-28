@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e01bc2c829c2d0511f6e3a37a3ca622f",
+    "revision": "50e81089441e77d9aa73ec72942bb0f6",
     "url": "/svg-rpg/index.html"
   },
   {
