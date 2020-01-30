@@ -38,4 +38,4 @@ export const RS_SPRITE_HEX_COLORS = {
 
 export const THROTTLE_WAIT_DURATION = 150;
 
-export const MOVEMENT_INCREMENT = 3;
+export const MOVEMENT_INCREMENT = 2;

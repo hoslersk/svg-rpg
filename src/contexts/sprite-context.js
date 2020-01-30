@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 
 const SpriteContext = createContext(null);
 
 export function SpriteContextProvider({ children, environment, sprite }) {
 
-  const [position, setPosition] = useState({ x: 40, y: 40 }),
+  const [position, setPosition] = useState({
+          x: get(environment, 'startingPoint.x', 40),
+          y: get(environment, 'startingPoint.y', 40),
+        }),
         [direction, setDirection] = useState('down');
 
   const fill = useMemo(() => {

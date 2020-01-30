@@ -1,8 +1,8 @@
 import React from 'react';
 import { forEach, split, trim } from 'lodash';
 
-import Pattern from '../components/pattern';
-import Rect from '../components/svg';
+import Pattern from '../../components/pattern';
+import Rect from '../../components/rect';
 
 export function parseColorFromC(string) {
   const splitString = string.match(/.{1,2}/g),

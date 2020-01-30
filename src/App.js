@@ -1,40 +1,44 @@
 import React from 'react';
+import { Redirect, Route, Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
-import Screen from './components/screen';
-import Defs from './components/defs';
-import Environment from './components/environment';
-import Sprite from './components/sprite';
-import { EnvironmentContextProvider } from './contexts/environment-context';
-import { SpriteContextProvider } from './contexts/sprite-context';
+import SiteHeader from './components/site-header';
+import Root from './regions/root';
+import Scala from './regions/scala';
+import Vector from './regions/vector';
+import Graphium from './regions/graphium';
 
-import { ROOT_ENVIRONMENT_CONFIG } from './lib/environments';
-import { RS_SPRITE_CONFIG } from './lib/sprites';
+
+if (module.hot) module.hot.accept();
+
 
 function App() {
+  return (
+    <BrowserRouter basename="/">
+      <Route path="/" component={World} />
+    </BrowserRouter>
+  );
+}
+
+
+function World() {
 
   return (
     <>
-      <header>header</header>
+      <SiteHeader />
       <main>
-        <h1>Root</h1>
-        <EnvironmentContextProvider value={ROOT_ENVIRONMENT_CONFIG}>
-          <SpriteContextProvider
-            environment={ROOT_ENVIRONMENT_CONFIG}
-            sprite={RS_SPRITE_CONFIG}
-          >
-            <Screen>
-              <Defs>
-                {/*renderRawDataPattern('test', RS_SPRITE_LEFT_WALKING_TWO)*/}
-              </Defs>
-              <Environment />
-              <Sprite />
-            </Screen>
-          </SpriteContextProvider>
-        </EnvironmentContextProvider>
+        <Switch>
+          <Route path="/scala" component={Scala} />
+          <Route path="/vector" component={Vector} />
+          <Route path="/graphium" component={Graphium} />
+          <Route path="/" component={Root} />
+          <Redirect to="/" />
+        </Switch>
       </main>
-      <footer>footer</footer>
+      {/*<footer>footer</footer>*/}
     </>
   );
 }
+
 
 export default App;

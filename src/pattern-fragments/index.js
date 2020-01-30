@@ -1,5 +1,8 @@
 import Grass from './grass';
 import Tree from './tree';
+import Stair from './stair';
+import CliffFront from './cliff-front';
+import CliffLeft from './cliff-left';
 
 import SpriteFrontStanding from './sprite-front-standing';
 import SpriteFrontWalkingOne from './sprite-front-walking-one';
@@ -36,6 +39,33 @@ export default {
       // patternContentUnits: 'userSpaceOnUse',
     },
     Component: Tree,
+  },
+  cliffFront: {
+    defaultProps: {
+      width: 14,
+      height: 16,
+      patternUnits: 'userSpaceOnUse',
+      patternContentUnits: 'userSpaceOnUse',
+    },
+    Component: CliffFront,
+  },
+  cliffLeft: {
+    defaultProps: {
+      width: 1,
+      height: 1,
+      // patternUnits: 'userSpaceOnUse',
+      // patternContentUnits: 'userSpaceOnUse',
+    },
+    Component: CliffLeft,
+  },
+  stair: {
+    defaultProps: {
+      width: 32,
+      height: 8,
+      patternUnits: 'userSpaceOnUse',
+      patternContentUnits: 'userSpaceOnUse',
+    },
+    Component: Stair,
   },
 
   spriteFrontStanding: {

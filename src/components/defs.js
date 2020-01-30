@@ -11,9 +11,9 @@ export default function Defs(props) {
         spriteProps = SpriteContext.useContext();
 
   const { children, ...otherProps } = props,
-        environmentPatterns = map(environmentPatternConfigs, config =>
+        environmentPatterns = map(environmentPatternConfigs, (config, index) =>
           <Pattern
-            key={config.id}
+            key={`${config.id}-${index + 1}`}
             {...pick(config, 'id', 'patternUnits', 'patternContentUnits')}
           />
         ),

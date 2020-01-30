@@ -6,12 +6,14 @@ import EnvironmentContext from '../contexts/environment-context';
 import SpriteContext from '../contexts/sprite-context';
 import { ADVANCE_SCREEN_DIMENSIONS } from '../lib/constants';
 
+import './screen.scss';
+
 export default function Screen(props) {
   const environmentProps = EnvironmentContext.useContext(),
         spriteProps = SpriteContext.useContext();
 
-  const positionX = get(spriteProps, 'positionX', 0),
-        positionY = get(spriteProps, 'positionY', 0),
+  const positionX = get(spriteProps, 'position.x', 0),
+        positionY = get(spriteProps, 'position.y', 0),
         environmentWidth = get(environmentProps, 'dimensions.x', 0),
         environmentHeight = get(environmentProps, 'dimensions.y', 0);
 
@@ -28,9 +30,9 @@ export default function Screen(props) {
           return Math.max(0, Math.min(positionY - height / 2, maxY));
         }, [environmentHeight, positionY]);
 
-
   return (
     <AdvanceScreen
+      className="screen"
       cameraX={cameraPositionX}
       cameraY={cameraPositionY}
       {...props}

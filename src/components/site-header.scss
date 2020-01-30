@@ -1,0 +1,44 @@
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+
+  @media (max-width: 767.9px) {
+    flex-wrap: wrap;
+  }
+
+  &__brand {
+    width: 100%;
+
+    @media (min-width: 768px) {
+      margin-right: 5rem;
+      width: 25%;
+      flex: 1 1 25%;
+    }
+  }
+
+  &__nav {
+    width: 75%;
+    flex: 1 1 75%;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 767.9px) {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    font-weight: 700;
+  }
+}
