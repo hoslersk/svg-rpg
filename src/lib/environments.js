@@ -36,6 +36,7 @@ export const SCALA_ENVIRONMENT_CONFIG = {
     x: 138,
     y: 574,
   },
+  startingDirection: 'up',
   layers: [
     {
       id: 'cliff-front',

@@ -9,7 +9,7 @@ export function SpriteContextProvider({ children, environment, sprite }) {
           x: get(environment, 'startingPoint.x', 40),
           y: get(environment, 'startingPoint.y', 40),
         }),
-        [direction, setDirection] = useState('down');
+        [direction, setDirection] = useState(get(environment, 'startingDirection', 'down'));
 
   const fill = useMemo(() => {
     const matchingState = find(sprite.states, ['direction', direction]),
