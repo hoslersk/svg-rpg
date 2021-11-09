@@ -22,7 +22,7 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
     setIsKeyDown(true);
     if (typeof onKeyDown != "function") return;
     onKeyDown(e);
-  })
+  }, [onKeyDown, onKeyUp])
 
   const onKeyUpLocal = useCallback(e => {
     if (isDebugging) console.log("key up", e.key, e.key !== targetKey ? "- isn't triggered" : "- is triggered");
@@ -30,7 +30,7 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
     setIsKeyDown(false);
     if (typeof onKeyUp !== "function") return;
     onKeyUp(e);
-  })
+  }, [onKeyDown, onKeyUp])
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDownLocal);
@@ -39,7 +39,7 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
       window.removeEventListener('keydown', onKeyDownLocal);
       window.removeEventListener('keyup', onKeyUpLocal);
     }
-  }, []);
+  }, [onKeyDown, onKeyUp])
 
   return isKeyDown;
 }
