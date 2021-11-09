@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { debounce, filter, get, some, split, throttle } from 'lodash';
+import { debounce, filter, get, map, some, split, throttle } from 'lodash';
 
 import EnvironmentContext from '../contexts/environment-context';
+import ObstacleContext from '../contexts/obstacle-context';
 import SpriteContext from '../contexts/sprite-context';
 import { useOnKeyPress } from '../lib/hooks';
 import Rect from './rect';
@@ -52,106 +53,108 @@ function determineDirection(currentDirection, newDirection) {
 
 
 export default function Sprite(props) {
-  const environmentProps = EnvironmentContext.useContext(),
-        environmentWidth = get(environmentProps, 'dimensions.x', 0),
-        environmentHeight = get(environmentProps, 'dimensions.y', 0),
-        obstacles = filter(get(environmentProps, 'layers', []), 'collision'),
-        spriteProps = SpriteContext.useContext(),
-        {
-          position,
-          setPosition,
-          setDirection,
-          fill,
-          width,
-          height,
-          collisionOffsetX,
-          collisionOffsetY,
-        } = spriteProps;
+  const environmentProps = EnvironmentContext.useContext();
+  const environmentWidth = get(environmentProps, 'dimensions.x', 0);
+  const environmentHeight = get(environmentProps, 'dimensions.y', 0);
 
+	const obstacleProps = ObstacleContext.useContext();
+
+	const obstacles = [
+		...filter(get(environmentProps, 'layers', []), 'collision'),
+		...map(obstacleProps.dynamic),
+	];
+
+	const spriteProps = SpriteContext.useContext();
+	const {
+		position,
+		setPosition,
+		setDirection,
+		fill,
+		width,
+		height,
+		collisionOffsetX,
+		collisionOffsetY,
+	} = spriteProps;
 
   const boundsX = useMemo(() => ({
-          min: 0,
-          max: environmentWidth - width,
-        }), [environmentWidth, width]),
-
-        boundsY = useMemo(() => ({
-            min: 0,
-            max: environmentHeight - height,
-        }), [environmentHeight, height]);
-
+		min: 0,
+		max: environmentWidth - width,
+	}), [environmentWidth, width]);
+	const boundsY = useMemo(() => ({
+			min: 0,
+			max: environmentHeight - height,
+	}), [environmentHeight, height]);
 
   const willCollide = (newCoordinates) => {
-          return some(obstacles, obstacle => {
-            return newCoordinates.x + width/* + speedX */> obstacle.x &&
-                    newCoordinates.x - collisionOffsetX/* + speedY */< obstacle.x + obstacle.width &&
-                    newCoordinates.y + height > obstacle.y &&
-                    newCoordinates.y - collisionOffsetY < obstacle.y + obstacle.height;
-          });
-        },
+		return some(obstacles, obstacle => {
+			return newCoordinates.x + width/* + speedX */> obstacle.x &&
+							newCoordinates.x - collisionOffsetX/* + speedY */< obstacle.x + obstacle.width &&
+							newCoordinates.y + height > obstacle.y &&
+							newCoordinates.y - collisionOffsetY < obstacle.y + obstacle.height;
+		});
+	};
 
-        shouldUpdatePosition = (bounds, nextCoordinate) => {
-          return nextCoordinate >= bounds.min && nextCoordinate <= bounds.max;
-        },
+	const shouldUpdatePosition = (bounds, nextCoordinate) => {
+		return nextCoordinate >= bounds.min && nextCoordinate <= bounds.max;
+	};
 
-        shouldUpdatePositionX = nextCoordinates => {
-          if (willCollide(nextCoordinates)) return false;
-          return shouldUpdatePosition(boundsX, nextCoordinates.x);
-        },
+	const shouldUpdatePositionX = nextCoordinates => {
+		if (willCollide(nextCoordinates)) return false;
+		return shouldUpdatePosition(boundsX, nextCoordinates.x);
+	};
 
-        shouldUpdatePositionY = nextCoordinates => {
-          if (willCollide(nextCoordinates)) return false;
-          return shouldUpdatePosition(boundsY, nextCoordinates.y);
-        };
-
+	const shouldUpdatePositionY = nextCoordinates => {
+		if (willCollide(nextCoordinates)) return false;
+		return shouldUpdatePosition(boundsY, nextCoordinates.y);
+	};
 
   const moveUp = throttle(() => {
-        setDirection(direction => determineDirection(direction, 'up'));
-        setPosition(({ x, y }) => {
-          const newY = y - MOVEMENT_INCREMENT,
-          newCoordinates = { x, y: newY };
+		setDirection(direction => determineDirection(direction, 'up'));
+		setPosition(({ x, y }) => {
+			const newY = y - MOVEMENT_INCREMENT,
+			newCoordinates = { x, y: newY };
 
-          if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
-          return ({ x, y });
-        });
-      }, THROTTLE_WAIT_DURATION),
+			if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
+			return ({ x, y });
+		});
+	}, THROTTLE_WAIT_DURATION);
 
-      moveDown = throttle(() => {
-        setDirection(direction => determineDirection(direction, 'down'));
-        setPosition(({ x, y }) => {
-          const newY = y + MOVEMENT_INCREMENT,
-                newCoordinates = { x, y: newY };
+	const moveDown = throttle(() => {
+		setDirection(direction => determineDirection(direction, 'down'));
+		setPosition(({ x, y }) => {
+			const newY = y + MOVEMENT_INCREMENT,
+						newCoordinates = { x, y: newY };
 
-          if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
-          return ({ x, y });
-        });
-      }, THROTTLE_WAIT_DURATION),
+			if (shouldUpdatePositionY(newCoordinates)) return newCoordinates;
+			return ({ x, y });
+		});
+	}, THROTTLE_WAIT_DURATION);
 
-      moveRight = throttle(() => {
-        setDirection(direction => determineDirection(direction, 'right'));
-        setPosition(({ x, y }) => {
-          const newX = x + MOVEMENT_INCREMENT,
-                newCoordinates = { x: newX, y };
+	const moveRight = throttle(() => {
+		setDirection(direction => determineDirection(direction, 'right'));
+		setPosition(({ x, y }) => {
+			const newX = x + MOVEMENT_INCREMENT,
+						newCoordinates = { x: newX, y };
 
-          if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
-          return ({ x, y });
-        });
-      }, THROTTLE_WAIT_DURATION),
+			if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
+			return ({ x, y });
+		});
+	}, THROTTLE_WAIT_DURATION);
 
-      moveLeft = throttle(() => {
-        setDirection(direction => determineDirection(direction, 'left'));
-        setPosition(({ x, y }) => {
-          const newX = x - MOVEMENT_INCREMENT,
-                newCoordinates = { x: newX, y };
+	const moveLeft = throttle(() => {
+		setDirection(direction => determineDirection(direction, 'left'));
+		setPosition(({ x, y }) => {
+			const newX = x - MOVEMENT_INCREMENT,
+						newCoordinates = { x: newX, y };
 
-          if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
-          return ({ x, y });
-        });
-      }, THROTTLE_WAIT_DURATION),
+			if (shouldUpdatePositionX(newCoordinates)) return newCoordinates;
+			return ({ x, y });
+		});
+	}, THROTTLE_WAIT_DURATION);
 
-      rest = debounce(() => {
-        setDirection(direction => split(direction, '-')[0]);
-      }, THROTTLE_WAIT_DURATION);
-
+	const rest = debounce(() => {
+		setDirection(direction => split(direction, '-')[0]);
+	}, THROTTLE_WAIT_DURATION);
 
   useOnKeyPress('ArrowUp', moveUp, rest);
   useOnKeyPress('ArrowDown', moveDown, rest);

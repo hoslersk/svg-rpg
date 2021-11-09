@@ -17,7 +17,9 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
   const [isKeyDown, setIsKeyDown] = useState(false);
 
   const onKeyDownLocal = useCallback(e => {
-    if (isDebugging) console.log("key down", e.key, e.key !== targetKey ? "- isn't triggered" : "- is triggered");
+    if (isDebugging) {
+			console.log("key down", e.key, e.key !== targetKey ? "- isn't triggered" : "- is triggered");
+		}
     if (e.key !== targetKey) return;
     setIsKeyDown(true);
     if (typeof onKeyDown != "function") return;
@@ -25,7 +27,9 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
   }, [onKeyDown, onKeyUp])
 
   const onKeyUpLocal = useCallback(e => {
-    if (isDebugging) console.log("key up", e.key, e.key !== targetKey ? "- isn't triggered" : "- is triggered");
+    if (isDebugging) {
+			console.log("key up", e.key, e.key !== targetKey ? "- isn't triggered" : "- is triggered");
+		}
     if (e.key !== targetKey) return;
     setIsKeyDown(false);
     if (typeof onKeyUp !== "function") return;
@@ -42,4 +46,25 @@ export const useOnKeyPress = (targetKey, onKeyDown, onKeyUp, isDebugging=false) 
   }, [onKeyDown, onKeyUp])
 
   return isKeyDown;
+}
+
+
+// https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+export function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
 }

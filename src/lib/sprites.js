@@ -1,3 +1,4 @@
+import { GRUB_SPRITE_PATH_CONFIGS } from "./sprite-configs";
 
 export const RS_SPRITE_CONFIG = {
   dimensions: {
@@ -101,4 +102,81 @@ export const RS_SPRITE_CONFIG = {
       direction: 'left-left-left-left-left',
     },
   ],
+};
+
+
+export const GRUB_SPRITE_CONFIG = {
+	dimensions: {
+    x: 32,
+    y: 32,
+  },
+  collisionOffsets: {
+    x: 0,
+    y: 0,
+  },
+	sheetDimensions: {
+		width: 128,
+		height: 32,
+	},
+	paths: GRUB_SPRITE_PATH_CONFIGS,
+	frames: {
+		default: {
+			down: [
+				{
+					x: 0,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 500,
+				},
+				{
+					x: 32,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 500,
+				},
+			],
+		},
+		attack: {
+			down: [
+				{
+					x: 0,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 200,
+				},
+				{
+					x: 64,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 200,
+					move: {
+						x: -4,
+						y: 4,
+					},
+				},
+				{
+					x: 96,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 200,
+					move: {
+						x: -8,
+						y: 8,
+					},
+				},
+				{
+					x: 32,
+					y: 0,
+					width: 32,
+					height: 32,
+					duration: 300,
+				},
+			],
+		},
+	},
 };

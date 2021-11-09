@@ -22,7 +22,6 @@ function App() {
 
 
 function World() {
-
   return (
     <>
       <SiteHeader />
@@ -35,7 +34,12 @@ function World() {
           <Redirect to="/" />
         </Switch>
       </main>
-      {/*<footer>footer</footer>*/}
+      <footer>
+				A WIP by{' '}
+				<a href="https://schylerhosler.com" target="_blank" rel="noreferrer noopener">
+					Schyler Hosler
+				</a>
+			</footer>
     </>
   );
 }
