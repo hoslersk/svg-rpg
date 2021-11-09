@@ -1,4 +1,5 @@
-import { GRUB_SPRITE_PATH_CONFIGS } from "./sprite-configs";
+import { map } from 'lodash';
+import { GRUB_SPRITE_PATH_CONFIGS } from './sprite-configs';
 
 export const RS_SPRITE_CONFIG = {
   dimensions: {
@@ -104,8 +105,80 @@ export const RS_SPRITE_CONFIG = {
   ],
 };
 
+const grubDefaultFramesLeft = [
+	{
+		x: 0,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 500,
+	},
+	{
+		x: 32,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 500,
+	},
+];
+
+const grubDefaultFramesRight = map(grubDefaultFramesLeft, frame => ({
+	...frame,
+	scale: {
+		x: -1,
+		y: 1,
+	}
+}));
+
+const grubAttackFramesLeft = [
+	{
+		x: 0,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 200,
+	},
+	{
+		x: 64,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 200,
+		move: {
+			x: 1,
+			y: 0,
+		},
+	},
+	{
+		x: 96,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 300,
+		move: {
+			x: 8,
+			y: 0,
+		},
+	},
+	{
+		x: 32,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 300,
+	},
+];
+
+const grubAttackFramesRight = map(grubAttackFramesLeft, frame => ({
+	...frame,
+	scale: {
+		x: -1,
+		y: 1,
+	}
+}));
 
 export const GRUB_SPRITE_CONFIG = {
+	defaultDirection: 'left',
 	dimensions: {
     x: 32,
     y: 32,
@@ -121,62 +194,16 @@ export const GRUB_SPRITE_CONFIG = {
 	paths: GRUB_SPRITE_PATH_CONFIGS,
 	frames: {
 		default: {
-			down: [
-				{
-					x: 0,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 500,
-				},
-				{
-					x: 32,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 500,
-				},
-			],
+			left: grubDefaultFramesLeft,
+			right: grubDefaultFramesRight,
+			up: grubDefaultFramesRight,
+			down: grubDefaultFramesLeft,
 		},
 		attack: {
-			down: [
-				{
-					x: 0,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 200,
-				},
-				{
-					x: 64,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 200,
-					move: {
-						x: -4,
-						y: 4,
-					},
-				},
-				{
-					x: 96,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 200,
-					move: {
-						x: -8,
-						y: 8,
-					},
-				},
-				{
-					x: 32,
-					y: 0,
-					width: 32,
-					height: 32,
-					duration: 300,
-				},
-			],
+			left: grubAttackFramesLeft,
+			right: grubAttackFramesRight,
+			up: grubAttackFramesRight,
+			down: grubAttackFramesLeft
 		},
 	},
 };

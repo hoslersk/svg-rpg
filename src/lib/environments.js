@@ -95,6 +95,7 @@ export const VECTOR_ENVIRONMENT_CONFIG = {
     x: 100,
     y: 100,
   },
+	startingDirection: 'right',
   layers: [
     // {
     //   id: 'grass',

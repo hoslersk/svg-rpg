@@ -3,12 +3,13 @@ import React from 'react';
 import Screen from '../components/screen';
 import Defs from '../components/defs';
 import Environment from '../components/environment';
+import NonPlayableCharacter from '../components/non-playable-character';
 import Sprite from '../components/sprite';
 import { EnvironmentContextProvider } from '../contexts/environment-context';
 import { ObstacleContextProvider } from '../contexts/obstacle-context';
 import { SpriteContextProvider } from '../contexts/sprite-context';
 import { VECTOR_ENVIRONMENT_CONFIG } from '../lib/environments';
-import { RS_SPRITE_CONFIG } from '../lib/sprites';
+import { RS_SPRITE_CONFIG, GRUB_SPRITE_CONFIG } from '../lib/sprites';
 
 export default function Vector() {
   return (
@@ -25,6 +26,14 @@ export default function Vector() {
 								{/*renderRawDataPattern('test', RS_SPRITE_LEFT_WALKING_TWO)*/}
 							</Defs>
 							<Environment />
+							<NonPlayableCharacter
+								id="grub"
+								startingAction="attack"
+								startingDirection="left"
+								startX={200}
+								startY={90}
+								{...GRUB_SPRITE_CONFIG}
+							/>
 							<Sprite />
 						</Screen>
 					</SpriteContextProvider>

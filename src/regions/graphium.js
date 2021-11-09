@@ -26,7 +26,13 @@ export default function Graphium() {
 								{/*renderRawDataPattern('test', RS_SPRITE_LEFT_WALKING_TWO)*/}
 							</Defs>
 							<Environment />
-							<NonPlayableCharacter id="grub" startX={230} startY={40} {...GRUB_SPRITE_CONFIG} />
+							<NonPlayableCharacter
+								id="grub"
+								startX={230}
+								startY={40}
+								startingDirection="left"
+								{...GRUB_SPRITE_CONFIG}
+							/>
 							<Sprite />
 						</Screen>
 					</SpriteContextProvider>

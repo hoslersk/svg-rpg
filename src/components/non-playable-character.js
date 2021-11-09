@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { filter, get, map, random, sample, some } from 'lodash';
+import { clamp, filter, get, map, random, sample, some } from 'lodash';
 
 import EnvironmentContext from '../contexts/environment-context';
 import ObstacleContext from '../contexts/obstacle-context';
@@ -14,13 +14,62 @@ function determineNextFrameIndex(frames, currentIndex) {
 }
 
 
+const FLIPPED_DIRECTIONS = {
+	right: 'left',
+	left: 'right',
+	up: 'down',
+	down: 'up',
+};
+
+const AXIS_DIRECTION = {
+	x: {
+		positive: 'right',
+		negative: 'left',
+	},
+	y: {
+		positive: 'up',
+		negative: 'down',
+	},
+};
+
+const DIRECTION_MULTIPLIERS = {
+	left: -1,
+	right: 1,
+	up: -1,
+	down: 1,
+};
+
+function getNumberDifference(a, b) {
+	return a > b ? a - b : b - a;
+}
+
+function determineMovementDirection(previousCoordinates, newCoordinates) {
+	const differenceX = getNumberDifference(previousCoordinates.x, newCoordinates.x);
+	const differenceY = getNumberDifference(previousCoordinates.y, newCoordinates.y);
+	const axis = differenceY > differenceX ? 'y' : 'x'
+	const changeType = previousCoordinates[axis] < newCoordinates[axis] ? 'positive' : 'negative';
+	return AXIS_DIRECTION[axis][changeType];
+}
+
 export default function NonPlayableCharacter(props) {
-	const { frames, id, paths, collisionOffsets, startX = 0, startY = 0 } = props;
+	const {
+		frames,
+		id,
+		paths,
+		collisionOffsets,
+		defaultDirection,
+		startingAction = 'default',
+		startingDirection = 'down',
+		startX = 0,
+		startY = 0,
+	} = props;
 
 	const [isRunning/*, setIsRunning*/] = useState(true);
-	const [actionName/*, setActionName*/] = useState('default');
-	const [direction/*, setDirection*/] = useState('down');
+	const [actionName/*, setActionName*/] = useState(startingAction);
+	const [direction, setDirection] = useState(defaultDirection || startingDirection);
 	const [frameIndex, setFrameIndex] = useState(0);
+	const [scale, setScale] = useState({ x: 1, y: 1 });
+	const resetScale = () => setScale({ x: 1, y: 1 });
 
 	const defaultFrame = frames[actionName][direction][0];
 
@@ -36,6 +85,8 @@ export default function NonPlayableCharacter(props) {
 
 	const [position, setPosition] = useState({ x: startX, y: startY });
 	const move = coordinates => {
+		const newDirection = determineMovementDirection(position, coordinates);
+		setDirection(newDirection);
 		obstacleProps.update({ id, width, height, ...coordinates });
 		setPosition(coordinates);
 	};
@@ -43,23 +94,6 @@ export default function NonPlayableCharacter(props) {
 	useIsMounted(() => {
 		obstacleProps.update({ id, x, y, width, height });
 	}, [])
-
-  const action = (actionName, direction, currentFrameIndex = 0) => {
-		const actionConfig = frames[actionName][direction];
-    const frameConfig = actionConfig[currentFrameIndex];
-		const nextFrameIndex = determineNextFrameIndex(actionConfig, currentFrameIndex);
-
-    setX(frameConfig.x);
-    setY(frameConfig.y);
-		frameConfig.width && setWidth(frameConfig.width);
-		frameConfig.height && setHeight(frameConfig.height);
-		frameConfig.duration && setDelay(frameConfig.duration);
-    setFrameIndex(nextFrameIndex);
-  };
-
-  useInterval(() => {
-    action(actionName, direction, frameIndex);
-  }, isRunning ? delay : null);
 
 	const environmentProps = EnvironmentContext.useContext();
 	const environmentWidth = get(environmentProps, 'dimensions.x', 0);
@@ -122,17 +156,68 @@ export default function NonPlayableCharacter(props) {
 		if (shouldUpdatePosition(newCoordinates, { x: boundsX, y: boundsY })) {
 			move(newCoordinates);
 		}
+		else {
+			setDirection(currentDirection => FLIPPED_DIRECTIONS[currentDirection]);
+		}
+	};
+
+	const frameMovement = (direction, movementIncrements) => {
+		if (!movementIncrements) return;
+
+		const multiplierX = DIRECTION_MULTIPLIERS[direction];
+		const multiplierY = DIRECTION_MULTIPLIERS[direction];
+		const newX = (multiplierX * movementIncrements.x * MOVEMENT_INCREMENT) + position.x;
+		const newY = (multiplierY * movementIncrements.y * MOVEMENT_INCREMENT) + position.y;
+		// const clampedX = clamp(newX, boundsX.min, boundsX.max);
+		// const clampedY = clamp(newY, boundsY.min, boundsY.max);
+
+		if (shouldUpdatePosition({ x: newX, y: newY }, { x: boundsX, y: boundsY })) {
+			move({ x: newX, y: newY });
+		}
+		else {
+			setDirection(currentDirection => FLIPPED_DIRECTIONS[currentDirection]);
+		}
 	};
 
 	useInterval(() => {
 		randomMovement();
-	}, isRunning ? delay : null);
+	}, isRunning && actionName !== 'attack' ? delay : null);
 
-	const viewBox = `${x} ${y} ${width} ${height}`;
+	const action = (actionName, direction, currentFrameIndex = 0) => {
+		const actionConfig = frames[actionName][direction];
+    const frameConfig = actionConfig[currentFrameIndex];
+		const nextFrameIndex = determineNextFrameIndex(actionConfig, currentFrameIndex);
+
+    setX(frameConfig.x);
+    setY(frameConfig.y);
+		frameConfig.width && setWidth(frameConfig.width);
+		frameConfig.height && setHeight(frameConfig.height);
+		frameConfig.duration && setDelay(frameConfig.duration);
+		frameConfig.move && frameMovement(direction, frameConfig.move);
+		frameConfig.scale ? setScale(frameConfig.scale) : resetScale();
+    setFrameIndex(nextFrameIndex);
+  };
+
+  useInterval(() => {
+    action(actionName, direction, frameIndex);
+  }, isRunning ? delay : null);
+
+	const offsetX = scale.x > 0 ? 0 : -width;
+	const offsetY = scale.y > 0 ? 0 : -height;
+	const transform = `scale(${scale.x}, ${scale.y}) translate(${offsetX}, ${offsetY})`;
+	const viewBox = `${(x * scale.x)} ${(y * scale.y)} ${width} ${height}`;
 
 	return (
-		<svg viewBox={viewBox} x={position.x} y={position.y} width={width} height={height}>
-			{map(paths, path => <path key={path.fill} {...path} />)}
+		<svg
+			viewBox={viewBox}
+			x={position.x}
+			y={position.y}
+			width={width}
+			height={height}
+		>
+			<g transform={transform}>
+				{map(paths, path => <path key={path.fill} {...path} />)}
+			</g>
 		</svg>
 	);
 }
