@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDrag } from '@use-gesture/react'
-import { throttle } from 'lodash';
 
 import SpriteContext from '../contexts/sprite-context';
 
@@ -93,7 +92,7 @@ function AnalogPadControl({ bounds }) {
 		rest,
 	} = spriteProps;
 
-	const move = throttle((axis, coordinates) => {
+	const move = (axis, coordinates) => {
 		if (axis === 'x') {
 			if (coordinates[axis] < 0) moveLeft();
 			if (coordinates[axis] > 0) moveRight();
@@ -102,7 +101,7 @@ function AnalogPadControl({ bounds }) {
 			if (coordinates[axis] < 0) moveUp();
 			if (coordinates[axis] > 0) moveDown();
 		}
-	}, 1000);
+	};
 
 	const bind = useDrag(({ axis, down, movement: [mx, my], ...etc }) => {
 		if (down) {

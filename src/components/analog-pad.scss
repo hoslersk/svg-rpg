@@ -1,7 +1,12 @@
 .analog-pad {
   overflow: visible;
+  touch-action: none,
+
+  &__recess {
+    touch-action: none,
+  }
   
   &__control {
-    touch-action: 'none',
+    touch-action: none,
   }
 }
