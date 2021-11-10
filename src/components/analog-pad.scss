@@ -1,0 +1,7 @@
+.analog-pad {
+  overflow: visible;
+  
+  &__control {
+    touch-action: 'none',
+  }
+}
