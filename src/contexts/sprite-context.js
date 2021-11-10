@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { find, get } from 'lodash';
+import { useEffect } from 'react/cjs/react.development';
 
 const SpriteContext = createContext(null);
 
 export function SpriteContextProvider({ children, environment, sprite }) {
+	const location = useLocation();
 
   const [position, setPosition] = useState({
           x: get(environment, 'startingPoint.x', 40),
@@ -17,6 +20,16 @@ export function SpriteContextProvider({ children, environment, sprite }) {
 
     return `url(#${matchingId})`;
   }, [direction, sprite.states]);
+
+	useEffect(() => {
+		if (location.state) {
+			setPosition({
+				x: location.state.x,
+				y: location.state.y,
+			});
+			location.state.direction && setDirection(location.state.direction);
+		}
+	}, [location.state])
 
   const spriteProps = {
     position,

@@ -5,6 +5,7 @@ import EnvironmentContext from '../contexts/environment-context';
 import ObstacleContext from '../contexts/obstacle-context';
 import SpriteContext from '../contexts/sprite-context';
 import { useInterval, useIsMounted } from '../lib/hooks';
+import { getCollisions } from '../lib/utils/collision';
 import { MOVEMENT_INCREMENT } from '../lib/constants';
 
 
@@ -129,12 +130,15 @@ export default function NonPlayableCharacter(props) {
 	}), [environmentHeight, height]);
 
 	const willCollide = (newCoordinates) => {
-		return some(obstacles, obstacle => {
-			return newCoordinates.x + width/* + speedX */> obstacle.x &&
-							newCoordinates.x - collisionOffsets.x/* + speedY */< obstacle.x + obstacle.width &&
-							newCoordinates.y + height > obstacle.y &&
-							newCoordinates.y - collisionOffsets.y < obstacle.y + obstacle.height;
-		});
+		return !!getCollisions({
+			x: newCoordinates.x,
+			y: newCoordinates.y,
+			width,
+			height,
+			collisionOffsetX: collisionOffsets.x,
+			collisionOffsetY: collisionOffsets.y,
+			collisionElements: obstacles,
+		}).length;
 	};
 
 	const shouldUpdatePosition = (nextCoordinates, bounds) => {

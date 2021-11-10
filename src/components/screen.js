@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { get } from 'lodash';
+import { get, map } from 'lodash';
 
 import AdvanceScreen from './advance-screen';
 import EnvironmentContext from '../contexts/environment-context';
@@ -8,7 +8,7 @@ import { ADVANCE_SCREEN_DIMENSIONS } from '../lib/constants';
 
 import './screen.scss';
 
-export default function Screen(props) {
+export default function Screen({ children, debug = false, ...etc }) {
   const environmentProps = EnvironmentContext.useContext(),
         spriteProps = SpriteContext.useContext();
 
@@ -35,7 +35,22 @@ export default function Screen(props) {
       className="screen"
       cameraX={cameraPositionX}
       cameraY={cameraPositionY}
-      {...props}
-    />
+      {...etc}
+    >
+			{children}
+			<DebugContent {...{ debug, spriteProps, environmentProps }} />
+		</AdvanceScreen>
   );
+}
+
+
+function DebugContent({ debug, spriteProps, environmentProps }) {
+	if (!debug) return null;
+	return (
+		<g>
+			{map(environmentProps.links, ({ x, y, height, width }) => (
+				<rect fill="blue" fillOpacity="0.5" {...{ x, y, height, width }} />
+			))}
+		</g>
+	);
 }

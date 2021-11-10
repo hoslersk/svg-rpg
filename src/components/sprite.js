@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
-import { debounce, filter, get, map, some, split, throttle } from 'lodash';
+import React, { useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import { debounce, filter, get, map, split, throttle } from 'lodash';
 
 import EnvironmentContext from '../contexts/environment-context';
 import ObstacleContext from '../contexts/obstacle-context';
 import SpriteContext from '../contexts/sprite-context';
 import { useOnKeyPress } from '../lib/hooks';
+import { getCollisions } from '../lib/utils/collision';
 import Rect from './rect';
 import {
   MOVEMENT_INCREMENT,
@@ -52,7 +54,9 @@ function determineDirection(currentDirection, newDirection) {
 }
 
 
-export default function Sprite(props) {
+export default function Sprite() {
+	const history = useHistory();
+
   const environmentProps = EnvironmentContext.useContext();
   const environmentWidth = get(environmentProps, 'dimensions.x', 0);
   const environmentHeight = get(environmentProps, 'dimensions.y', 0);
@@ -85,14 +89,33 @@ export default function Sprite(props) {
 			max: environmentHeight - height,
 	}), [environmentHeight, height]);
 
-  const willCollide = (newCoordinates) => {
-		return some(obstacles, obstacle => {
-			return newCoordinates.x + width/* + speedX */> obstacle.x &&
-							newCoordinates.x - collisionOffsetX/* + speedY */< obstacle.x + obstacle.width &&
-							newCoordinates.y + height > obstacle.y &&
-							newCoordinates.y - collisionOffsetY < obstacle.y + obstacle.height;
-		});
+  const willCollide = (newCoordinates, elements = obstacles) => {
+		return !!getCollisions({
+			x: newCoordinates.x,
+			y: newCoordinates.y,
+			width,
+			height,
+			collisionOffsetX,
+			collisionOffsetY,
+			collisionElements: elements,
+		}).length;
 	};
+
+	const linkCollision = useMemo(() => {
+		return getCollisions({
+			x: position.x,
+			y: position.y,
+			height,
+			width,
+			collisionOffsetX,
+			collisionOffsetY,
+			collisionElements: environmentProps.links,
+		})[0];
+	}, [position, environmentProps.links]);
+
+	useEffect(() => {
+		if (linkCollision) history.push(linkCollision.to, linkCollision.state);
+	}, [linkCollision]);
 
 	const shouldUpdatePosition = (bounds, nextCoordinate) => {
 		return nextCoordinate >= bounds.min && nextCoordinate <= bounds.max;
@@ -157,9 +180,13 @@ export default function Sprite(props) {
 	}, THROTTLE_WAIT_DURATION);
 
   useOnKeyPress('ArrowUp', moveUp, rest);
+	useOnKeyPress('w', moveUp, rest);
   useOnKeyPress('ArrowDown', moveDown, rest);
+	useOnKeyPress('s', moveDown, rest);
   useOnKeyPress('ArrowLeft', moveLeft, rest);
+	useOnKeyPress('a', moveLeft, rest);
   useOnKeyPress('ArrowRight', moveRight, rest);
+	useOnKeyPress('d', moveRight, rest);
 
   return (
     <g className="sprite">

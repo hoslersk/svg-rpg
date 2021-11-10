@@ -6,8 +6,22 @@ export const ROOT_ENVIRONMENT_CONFIG = {
   },
   startingPoint: {
     x: 50,
-    y: 50,
+    y: 120,
   },
+	links: [
+		{
+			x: 224,
+			y: 0,
+			width: 32,
+			height: 14,
+			to: '/scala',
+			state: {
+				x: 136,
+				y: 568,
+				direction: 'up',
+			},
+		},
+	],
   layers: [
     {
       id: 'grass',
@@ -24,6 +38,29 @@ export const ROOT_ENVIRONMENT_CONFIG = {
       width: 34,
       height: 37,
     },
+		{
+      id: 'cliff-front',
+      x: 0,
+      y: 0,
+      width: 224,
+      height: 30,
+      collision: true,
+    },
+    {
+      id: 'cliff-front',
+      x: 256,
+      y: 0,
+      width: 44,
+      height: 30,
+      collision: true,
+    },
+		{
+      id: 'stair',
+      x: 224,
+      y: 0,
+      width: 32,
+      height: 30,
+    }
   ],
 };
 
@@ -34,9 +71,23 @@ export const SCALA_ENVIRONMENT_CONFIG = {
   },
   startingPoint: {
     x: 138,
-    y: 574,
+    y: 568,
   },
   startingDirection: 'up',
+	links: [
+		{
+			x: 128,
+      y: 590,
+      width: 32,
+			height: 14,
+			to: '/',
+			state: {
+				x: 232,
+				y: 4,
+				direction: 'down',
+			},
+		},
+	],
   layers: [
     {
       id: 'cliff-front',
@@ -96,6 +147,7 @@ export const VECTOR_ENVIRONMENT_CONFIG = {
     y: 100,
   },
 	startingDirection: 'right',
+	links: [],
   layers: [
     // {
     //   id: 'grass',
@@ -120,6 +172,7 @@ export const GRAPHIUM_ENVIRONMENT_CONFIG = {
     x: 200,
     y: 30,
   },
+	links: [],
   layers: [
     // {
     //   id: 'grass',
