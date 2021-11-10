@@ -56,8 +56,8 @@ export function SpriteContextProvider({ children, environment, sprite }) {
 	const location = useLocation();
 
   const [position, setPosition] = useState({
-		x: get(environment, 'startingPoint.x', 40),
-		y: get(environment, 'startingPoint.y', 40),
+		x: location.state?.x || get(environment, 'startingPoint.x', 40),
+		y: location.state?.y || get(environment, 'startingPoint.y', 40),
 	});
 
   const [direction, setDirection] = useState(get(environment, 'startingDirection', 'down'));
