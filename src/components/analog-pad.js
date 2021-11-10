@@ -85,33 +85,33 @@ function AnalogPadControl({ bounds }) {
 
 	const spriteProps = SpriteContext.useContext();
 	const {
-		// moveUp,
-		// moveRight,
-		// moveDown,
-		// moveLeft,
+		moveUp,
+		moveRight,
+		moveDown,
+		moveLeft,
 		rest,
 	} = spriteProps;
 
-	// const move = (axis, coordinates) => {
-	// 	const x = Math.abs(coordinates.x);
-	// 	const y = Math.abs(coordinates.y);
+	const move = (axis, coordinates) => {
+		const x = Math.abs(coordinates.x);
+		const y = Math.abs(coordinates.y);
 
-	// 	if (x > y) {
-	// 		if (coordinates[axis] < 0) moveLeft();
-	// 		if (coordinates[axis] > 0) moveRight();
-	// 	}
-	// 	if (y > x) {
-	// 		if (coordinates[axis] < 0) moveUp();
-	// 		if (coordinates[axis] > 0) moveDown();
-	// 	}
-	// };
+		if (x > y) {
+			if (coordinates[axis] < 0) moveLeft();
+			if (coordinates[axis] > 0) moveRight();
+		}
+		if (y > x) {
+			if (coordinates[axis] < 0) moveUp();
+			if (coordinates[axis] > 0) moveDown();
+		}
+	};
 
 	const bind = useDrag(({ axis, down, movement: [mx, my], ...etc }) => {
 		if (down) {
 			const newCoordinates = clampCircleCoordinates({ x: mx, y: my, radius: 10 });
 			setX(newCoordinates.x);
 			setY(newCoordinates.y);
-			// move(axis, newCoordinates)
+			move(axis, newCoordinates)
 		}
 		else {
 			setX(0);
