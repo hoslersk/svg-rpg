@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-const ObstacleContext = React.createContext(null);
+const ObstacleContext = createContext(null);
 
 
 export function ObstacleContextProvider({ children, environment }) {

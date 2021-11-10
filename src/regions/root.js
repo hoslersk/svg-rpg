@@ -1,5 +1,6 @@
 import React from 'react';
 
+import AnalogPad from '../components/analog-pad';
 import Screen from '../components/screen';
 import Defs from '../components/defs';
 import Environment from '../components/environment';
@@ -25,6 +26,7 @@ export default function Root() {
 							<Environment />
 							<Sprite />
 						</Screen>
+						<AnalogPad />
 					</SpriteContextProvider>
 				</ObstacleContextProvider>
       </EnvironmentContextProvider>

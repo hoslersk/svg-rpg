@@ -9,9 +9,13 @@ body {
 header,
 main,
 footer {
+	margin: 0 auto;
   max-width: 600px;
-  margin: 0 auto;
   padding: 0 1rem;
+}
+
+footer {
+	margin: 1rem auto 0;
 }
 
 h1 {

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-const EnvironmentContext = React.createContext(null);
+const EnvironmentContext = createContext(null);
 
 
 export function EnvironmentContextProvider({ children, value }) {

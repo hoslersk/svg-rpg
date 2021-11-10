@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDrag } from '@use-gesture/react'
+import { throttle } from 'lodash';
+
+import SpriteContext from '../contexts/sprite-context';
 
 import './analog-pad.scss';
 
@@ -41,6 +44,7 @@ export default function AnalogPad() {
 				</filter>
 			</defs>
 			<circle
+				className="analog-pad__recess"
 				r="25"
 				cx="50"
 				cy="25"
@@ -80,15 +84,37 @@ function AnalogPadControl({ bounds }) {
 	const [x, setX] = useState(0);
 	const [y, setY] = useState(0);
 
-	const bind = useDrag(({ down, movement: [mx, my], ...etc }) => {
+	const spriteProps = SpriteContext.useContext();
+	const {
+		moveUp,
+		moveRight,
+		moveDown,
+		moveLeft,
+		rest,
+	} = spriteProps;
+
+	const move = throttle((axis, coordinates) => {
+		if (axis === 'x') {
+			if (coordinates[axis] < 0) moveLeft();
+			if (coordinates[axis] > 0) moveRight();
+		}
+		if (axis === 'y') {
+			if (coordinates[axis] < 0) moveUp();
+			if (coordinates[axis] > 0) moveDown();
+		}
+	}, 1000);
+
+	const bind = useDrag(({ axis, down, movement: [mx, my], ...etc }) => {
 		if (down) {
-			const { x: newX, y: newY } = clampCircleCoordinates({ x: mx, y: my, radius: 10 });
-			setX(newX);
-			setY(newY);
+			const newCoordinates = clampCircleCoordinates({ x: mx, y: my, radius: 10 });
+			setX(newCoordinates.x);
+			setY(newCoordinates.y);
+			move(axis, newCoordinates)
 		}
 		else {
 			setX(0);
 			setY(0);
+			rest();
 		}
 	}, {
 		bounds,
