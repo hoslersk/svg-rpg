@@ -10,7 +10,7 @@ import { EnvironmentContextProvider } from '../contexts/environment-context';
 import { ObstacleContextProvider } from '../contexts/obstacle-context';
 import { SpriteContextProvider } from '../contexts/sprite-context';
 import { GRAPHIUM_ENVIRONMENT_CONFIG } from '../lib/environments';
-import { RS_SPRITE_CONFIG, GRUB_SPRITE_CONFIG } from '../lib/sprites';
+import { RS_SPRITE_CONFIG, GRUB_SPRITE_CONFIG, SLIME_SPRITE_CONFIG } from '../lib/sprites';
 
 export default function Graphium() {
   return (
@@ -31,8 +31,17 @@ export default function Graphium() {
 								id="grub"
 								startX={230}
 								startY={40}
+								movementInterval={1000}
 								startingDirection="left"
 								{...GRUB_SPRITE_CONFIG}
+							/>
+							<NonPlayableCharacter
+								id="slime"
+								startX={130}
+								startY={40}
+								startingDirection="down"
+								movementInterval={3000}
+								{...SLIME_SPRITE_CONFIG}
 							/>
 							<Sprite />
 						</Screen>

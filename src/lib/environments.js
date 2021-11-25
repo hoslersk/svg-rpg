@@ -139,11 +139,11 @@ export const SCALA_ENVIRONMENT_CONFIG = {
 
 export const VECTOR_ENVIRONMENT_CONFIG = {
   dimensions: {
-    x: 300,
-    y: 200,
+		x: 240,
+		y: 160,
   },
   startingPoint: {
-    x: 100,
+    x: 30,
     y: 100,
   },
 	startingDirection: 'right',

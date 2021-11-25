@@ -1,9 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { clamp, filter, get, map, random, sample, some } from 'lodash';
+import { filter, get, map, random, sample } from 'lodash';
 
 import EnvironmentContext from '../contexts/environment-context';
 import ObstacleContext from '../contexts/obstacle-context';
 import SpriteContext from '../contexts/sprite-context';
+import SVG from './svg';
 import { useInterval, useIsMounted } from '../lib/hooks';
 import { getCollisions } from '../lib/utils/collision';
 import { MOVEMENT_INCREMENT } from '../lib/constants';
@@ -63,6 +64,7 @@ export default function NonPlayableCharacter(props) {
 		startingDirection = 'down',
 		startX = 0,
 		startY = 0,
+		movementInterval: _movementInterval,
 	} = props;
 
 	const [isRunning/*, setIsRunning*/] = useState(true);
@@ -74,7 +76,8 @@ export default function NonPlayableCharacter(props) {
 
 	const defaultFrame = frames[actionName][direction][0];
 
-	const [delay, setDelay] = useState(defaultFrame.duration);
+	const [frameInterval, setFrameInterval] = useState(defaultFrame.duration);
+	const [movementInterval, setMovementInterval] = useState(_movementInterval);
 
 	const [x, setX] = useState(defaultFrame.x);
   const [y, setY] = useState(defaultFrame.y);
@@ -185,7 +188,7 @@ export default function NonPlayableCharacter(props) {
 
 	useInterval(() => {
 		randomMovement();
-	}, isRunning && actionName !== 'attack' ? delay : null);
+	}, isRunning && movementInterval ? movementInterval : null);
 
 	const action = (actionName, direction, currentFrameIndex = 0) => {
 		const actionConfig = frames[actionName][direction];
@@ -196,7 +199,7 @@ export default function NonPlayableCharacter(props) {
     setY(frameConfig.y);
 		frameConfig.width && setWidth(frameConfig.width);
 		frameConfig.height && setHeight(frameConfig.height);
-		frameConfig.duration && setDelay(frameConfig.duration);
+		frameConfig.duration && setFrameInterval(frameConfig.duration);
 		frameConfig.move && frameMovement(direction, frameConfig.move);
 		frameConfig.scale ? setScale(frameConfig.scale) : resetScale();
     setFrameIndex(nextFrameIndex);
@@ -204,7 +207,7 @@ export default function NonPlayableCharacter(props) {
 
   useInterval(() => {
     action(actionName, direction, frameIndex);
-  }, isRunning ? delay : null);
+  }, isRunning ? frameInterval : null);
 
 	const offsetX = scale.x > 0 ? 0 : -width;
 	const offsetY = scale.y > 0 ? 0 : -height;
@@ -212,16 +215,17 @@ export default function NonPlayableCharacter(props) {
 	const viewBox = `${(x * scale.x)} ${(y * scale.y)} ${width} ${height}`;
 
 	return (
-		<svg
+		<SVG
 			viewBox={viewBox}
 			x={position.x}
 			y={position.y}
 			width={width}
 			height={height}
+			id={id}
 		>
 			<g transform={transform}>
 				{map(paths, path => <path key={path.fill} {...path} />)}
 			</g>
-		</svg>
+		</SVG>
 	);
 }

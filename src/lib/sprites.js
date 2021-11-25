@@ -1,5 +1,10 @@
 import { map } from 'lodash';
-import { GRUB_SPRITE_PATH_CONFIGS } from './sprite-configs';
+
+import {
+	BOY_SPRITE_PATH_CONFIGS,
+	GRUB_SPRITE_PATH_CONFIGS,
+	SLIME_SPRITE_PATH_CONFIGS,
+} from './sprite-configs';
 
 export const RS_SPRITE_CONFIG = {
   dimensions: {
@@ -207,3 +212,168 @@ export const GRUB_SPRITE_CONFIG = {
 		},
 	},
 };
+
+
+const slimeIdleFramesDown = [
+	{
+		x: 0,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 32,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 64,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 96,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 128,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 160,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 192,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 224,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+];
+
+export const SLIME_SPRITE_CONFIG = {
+	defaultDirection: 'down',
+	dimensions: {
+    x: 32,
+    y: 32,
+  },
+  collisionOffsets: {
+    x: 0,
+    y: 0,
+  },
+	sheetDimensions: {
+		width: 256,
+		height: 32,
+	},
+	paths: SLIME_SPRITE_PATH_CONFIGS,
+	frames: {
+		default: {
+			up: slimeIdleFramesDown,
+			right: slimeIdleFramesDown,
+			down: slimeIdleFramesDown,
+			left: slimeIdleFramesDown,
+		},
+	},
+};
+
+
+const boyIdleFramesRight = [
+	{
+		x: 0,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 200,
+	},
+	{
+		x: 32,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 64,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 96,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 128,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 200,
+	},
+	{
+		x: 96,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+	{
+		x: 64,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
+	},
+];
+
+
+export const BOY_SPRITE_CONFIG = {
+	defaultDirection: 'right',
+	dimensions: {
+    x: 32,
+    y: 32,
+  },
+  collisionOffsets: {
+    x: 0,
+    y: 0,
+  },
+	sheetDimensions: {
+		width: 160,
+		height: 32,
+	},
+	paths: BOY_SPRITE_PATH_CONFIGS,
+	frames: {
+		default: {
+			up: boyIdleFramesRight,
+			right: boyIdleFramesRight,
+			down: boyIdleFramesRight,
+			left: boyIdleFramesRight,
+		},
+	},
+};
+

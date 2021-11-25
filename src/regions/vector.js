@@ -10,7 +10,8 @@ import { EnvironmentContextProvider } from '../contexts/environment-context';
 import { ObstacleContextProvider } from '../contexts/obstacle-context';
 import { SpriteContextProvider } from '../contexts/sprite-context';
 import { VECTOR_ENVIRONMENT_CONFIG } from '../lib/environments';
-import { RS_SPRITE_CONFIG, GRUB_SPRITE_CONFIG } from '../lib/sprites';
+import { BOY_SPRITE_CONFIG, RS_SPRITE_CONFIG, SLIME_SPRITE_CONFIG } from '../lib/sprites';
+import HealthBar from '../components/health-bar';
 
 export default function Vector() {
   return (
@@ -23,21 +24,47 @@ export default function Vector() {
 						sprite={RS_SPRITE_CONFIG}
 					>
 						<Screen>
-							<Defs>
-								{/*renderRawDataPattern('test', RS_SPRITE_LEFT_WALKING_TWO)*/}
-							</Defs>
+							<Defs />
 							<Environment />
-							<NonPlayableCharacter
+							{/* <NonPlayableCharacter
 								id="grub"
 								startingAction="attack"
 								startingDirection="left"
 								startX={200}
 								startY={90}
 								{...GRUB_SPRITE_CONFIG}
+							/> */}
+							<NonPlayableCharacter
+								id="slime"
+								startX={VECTOR_ENVIRONMENT_CONFIG.dimensions.x - 64}
+								startY={32}
+								startingDirection="down"
+								movementInterval={null}
+								{...SLIME_SPRITE_CONFIG}
 							/>
-							<Sprite />
+							<NonPlayableCharacter
+								id="boy"
+								startX={24}
+								startY={VECTOR_ENVIRONMENT_CONFIG.dimensions.y - 64}
+								startingDirection="right"
+								movementInterval={null}
+								{...BOY_SPRITE_CONFIG}
+							/>
+							{/* <Sprite /> */}
+							<HealthBar
+								x={VECTOR_ENVIRONMENT_CONFIG.dimensions.x - 60}
+								y={15}
+								current={33}
+								max={100}
+							/>
+							<HealthBar
+								x={10}
+								y={VECTOR_ENVIRONMENT_CONFIG.dimensions.y - 15}
+								current={75}
+								max={100}
+							/>
 						</Screen>
-						<AnalogPad />
+						{/* <AnalogPad /> */}
 					</SpriteContextProvider>
 				</ObstacleContextProvider>
       </EnvironmentContextProvider>
