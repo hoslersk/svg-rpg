@@ -1,6 +1,7 @@
 .analog-pad {
   overflow: visible;
   touch-action: none;
+  max-width: 160px;
 
   &__recess {
     touch-action: none;

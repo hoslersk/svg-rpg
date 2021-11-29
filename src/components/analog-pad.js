@@ -5,9 +5,10 @@ import SpriteContext from '../contexts/sprite-context';
 
 import './analog-pad.scss';
 
-const DEFAULT_X = 50;
+const DEFAULT_X = 25;
 const DEFAULT_Y = 25;
-const DEFAULT_RADIUS = 15;
+const DEFAULT_CONTROL_RADIUS = 15;
+const DEFAULT_RECESS_RADIUS = 25;
 
 export default function AnalogPad() {
 	const [bounds, setBounds] = useState({
@@ -26,7 +27,7 @@ export default function AnalogPad() {
 	}, [outerRef.current])
 
 	return (
-		<svg className="analog-pad" viewBox="-1 -1 102 52">
+		<svg className="analog-pad" viewBox={`-1 -1 ${(DEFAULT_X * 2) + 2} ${(DEFAULT_Y * 2) + 2}`}>
 			<defs>
 				<radialGradient id="analog-pad-recess-fill" cx="40%" cy="40%" r="55%">
 					<stop offset="0%" stopColor="#ccc"/>
@@ -44,9 +45,9 @@ export default function AnalogPad() {
 			</defs>
 			<circle
 				className="analog-pad__recess"
-				r="25"
-				cx="50"
-				cy="25"
+				r={DEFAULT_RECESS_RADIUS}
+				cx={DEFAULT_X}
+				cy={DEFAULT_Y}
 				fill="url(#analog-pad-recess-fill)"
 				stroke="url(#analog-pad-recess-stroke)"
 				strokeWidth="1"
@@ -126,7 +127,7 @@ function AnalogPadControl({ bounds }) {
 	return (
 		<circle
 			className="analog-pad__control"
-			r={DEFAULT_RADIUS}
+			r={DEFAULT_CONTROL_RADIUS}
 			cx={DEFAULT_X}
 			cy={DEFAULT_Y}
 			fill="#eee"
