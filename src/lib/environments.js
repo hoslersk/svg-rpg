@@ -33,10 +33,10 @@ export const ROOT_ENVIRONMENT_CONFIG = {
     {
       id: 'tree',
       collision: true,
-      x: 240 / 2,
-      y: 160 / 2,
-      width: 34,
-      height: 37,
+      x: 128,
+      y: 128,
+      width: 32,
+      height: 32,
     },
 		{
       id: 'cliff-front',

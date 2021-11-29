@@ -35,8 +35,8 @@ export default {
     defaultProps: {
       width: 32,
       height: 32,
-      // patternUnits: 'userSpaceOnUse',
-      // patternContentUnits: 'userSpaceOnUse',
+      patternUnits: 'userSpaceOnUse',
+      patternContentUnits: 'userSpaceOnUse',
     },
     Component: Tree,
   },
