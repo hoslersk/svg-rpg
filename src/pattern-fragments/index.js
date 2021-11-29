@@ -24,8 +24,8 @@ import SpriteLeftWalkingTwo from './sprite-left-walking-two';
 export default {
   grass: {
     defaultProps: {
-      width: 16,
-      height: 16,
+      width: 32,
+      height: 32,
       patternUnits: 'userSpaceOnUse',
       patternContentUnits: 'userSpaceOnUse',
     },
@@ -33,8 +33,8 @@ export default {
   },
   tree: {
     defaultProps: {
-      width: 1,
-      height: 1,
+      width: 32,
+      height: 32,
       // patternUnits: 'userSpaceOnUse',
       // patternContentUnits: 'userSpaceOnUse',
     },

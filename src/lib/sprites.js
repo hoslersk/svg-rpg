@@ -305,7 +305,14 @@ const boyIdleFramesRight = [
 		y: 0,
 		width: 32,
 		height: 32,
-		duration: 200,
+		duration: 100,
+	},
+	{
+		x: 0,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
 	},
 	{
 		x: 32,
@@ -333,7 +340,14 @@ const boyIdleFramesRight = [
 		y: 0,
 		width: 32,
 		height: 32,
-		duration: 200,
+		duration: 100,
+	},
+	{
+		x: 128,
+		y: 0,
+		width: 32,
+		height: 32,
+		duration: 100,
 	},
 	{
 		x: 96,
